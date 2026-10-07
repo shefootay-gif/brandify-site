@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+coverage/
+/storage/
+.env
+.env.local
+.admin-credentials.local
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+.DS_Store
+Thumbs.db

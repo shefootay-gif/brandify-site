@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Brandify design tokens
+   Navy #021D4E and Orange #FF6B00 are sampled from the logo.
+   Everything else is a neutral built to support them.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand */
+  --color-navy-950: #01122f;
+  --color-navy-900: #021d4e;
+  --color-navy-800: #0b2a63;
+  --color-navy-700: #1b3a73;
+  --color-navy-600: #2f4f8a;
+  --color-navy-100: #e3e8f2;
+  --color-navy-50: #f1f4f9;
+
+  --color-orange-500: #ff6b00;
+  --color-orange-600: #e55f00;
+  --color-orange-700: #a84400; /* orange as text on light backgrounds (AA ≥ 5:1) */
+  --color-orange-100: #ffe8d6;
+  --color-orange-50: #fff4ec;
+
+  /* Neutrals */
+  --color-paper: #faf8f5;
+  --color-paper-2: #f3f0ea;
+  --color-ink-900: #0d1526;
+  --color-ink-600: #4a5571;
+  --color-ink-400: #687189; /* smallest readable muted text (AA on paper) */
+  --color-line: #e6e3dd;
+  --color-line-dark: #1d3466;
+
+  /* States */
+  --color-success: #1a7a50;
+  --color-success-bg: #e6f4ec;
+  --color-warning: #845a00;
+  --color-warning-bg: #fdf3dc;
+  --color-danger: #b3302a;
+  --color-danger-bg: #fbe9e7;
+  --color-info: #2f4f8a;
+  --color-info-bg: #e9eef7;
+
+  /* Typography — font variables are injected by next/font */
+  --font-display: var(--font-display-family), var(--font-latin), system-ui, sans-serif;
+  --font-sans: var(--font-body-family), var(--font-latin), system-ui, sans-serif;
+  --font-latin: var(--font-outfit), system-ui, sans-serif;
+
+  /* Radius — "bubble" echoes the speech-bubble corner in the logo */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows (calm, never coloured glows) */
+  --shadow-sm: 0 1px 2px rgb(2 29 78 / 0.06), 0 1px 1px rgb(2 29 78 / 0.04);
+  --shadow-md: 0 4px 16px -4px rgb(2 29 78 / 0.12);
+  --shadow-lift: 0 18px 40px -18px rgb(2 29 78 / 0.35);
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 500ms;
+
+  /* Breakpoints (Tailwind defaults, restated for clarity) */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  to { transform: translateX(calc(-50% * var(--marquee-dir, 1))); }
+}
+
+/* ─── Fluid type scale ───────────────────────────────────── */
+:root {
+  --text-display: clamp(2.25rem, 1.5rem + 3.4vw, 4.25rem);
+  --text-h1: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  --text-h2: clamp(1.6rem, 1.25rem + 1.5vw, 2.375rem);
+  --text-h3: clamp(1.2rem, 1.05rem + 0.5vw, 1.5rem);
+  --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+
+  --lh-display: 1.05;
+  --lh-heading: 1.15;
+  --lh-body: 1.65;
+
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --section-y: clamp(4.5rem, 3rem + 6vw, 9rem);
+  --header-h: 72px;
+}
+
+:root:lang(ar) {
+  --font-display-family: var(--font-el-messiri);
+  --font-body-family: var(--font-el-messiri);
+}
+:root:lang(en) {
+  --font-display-family: var(--font-outfit);
+  --font-body-family: var(--font-outfit);
+}
+
+/* Arabic needs more line height and a slightly larger body size. */
+:root:lang(ar) {
+  --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-small: 0.9375rem;
+  --text-caption: 0.8125rem;
+  --lh-display: 1.25;
+  --lh-heading: 1.35;
+  --lh-body: 1.85;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: var(--lh-heading);
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  :lang(ar) h1, :lang(ar) h2, :lang(ar) h3, :lang(ar) h4 { letter-spacing: 0; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-orange-500); color: var(--color-navy-950); }
+
+  /* Visible, consistent keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid var(--color-orange-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  [data-surface="dark"] :focus-visible { outline-color: var(--color-orange-500); }
+
+  input, textarea, select, button { font: inherit; }
+  img, video { max-width: 100%; height: auto; }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .section-y { padding-block: var(--section-y); }
+
+  .t-display { font-family: var(--font-display); font-size: var(--text-display); line-height: var(--lh-display); font-weight: 700; }
+  .t-h1 { font-size: var(--text-h1); font-weight: 700; }
+  .t-h2 { font-size: var(--text-h2); font-weight: 700; }
+  .t-h3 { font-size: var(--text-h3); font-weight: 600; }
+  .t-small { font-size: var(--text-small); }
+  .t-caption { font-size: var(--text-caption); letter-spacing: 0.02em; }
+  .t-eyebrow {
+    font-size: var(--text-small);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  :lang(en) .t-eyebrow { text-transform: uppercase; font-size: var(--text-caption); letter-spacing: 0.14em; }
+  .t-latin { font-family: var(--font-latin); }
+
+  /* Speech-bubble shape from the logo: one sharp corner on the trailing-bottom side. */
+  .shape-bubble { border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 3px; }
+  [dir="rtl"] .shape-bubble { border-radius: var(--radius-lg) var(--radius-lg) 3px var(--radius-lg); }
+
+  /* Price-tag shape from the logo, used for category chips. */
+  .shape-tag {
+    --notch: 10px;
+    clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%);
+    padding-inline-end: calc(var(--notch) + 0.75rem);
+  }
+  [dir="rtl"] .shape-tag {
+    clip-path: polygon(var(--notch) 0, 100% 0, 100% 100%, var(--notch) 100%, 0 50%);
+  }
+
+  [dir="rtl"] .flip-rtl { transform: scaleX(-1); }
+
+  .prose-brand { line-height: var(--lh-body); }
+  .prose-brand > * + * { margin-top: 1em; }
+  .prose-brand h2 { font-size: var(--text-h3); font-weight: 700; margin-top: 2em; }
+  .prose-brand h3 { font-size: 1.15em; font-weight: 700; margin-top: 1.5em; }
+  .prose-brand ul { list-style: disc; padding-inline-start: 1.25em; }
+  .prose-brand ol { list-style: decimal; padding-inline-start: 1.25em; }
+  .prose-brand li + li { margin-top: 0.35em; }
+  .prose-brand a { color: var(--color-orange-700); text-decoration: underline; text-underline-offset: 3px; }
+  .prose-brand blockquote { border-inline-start: 3px solid var(--color-orange-500); padding-inline-start: 1em; color: var(--color-ink-600); }
+}
+
+/* ─── Motion ─────────────────────────────────────────────── */
+/* Reveal-on-scroll: elements start hidden only when JS has marked the page. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms var(--ease-out-quint),
+    transform 700ms var(--ease-out-quint);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Hero signature: the three logo shapes draw themselves, then the words land. */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(0.35em); } to { opacity: 1; transform: none; } }
+@keyframes grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.motif-row svg path, .motif-row svg circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 900ms var(--ease-out-quint) forwards;
+  animation-delay: calc(300ms + var(--i) * 260ms);
+}
+.motif-row svg circle { stroke-dasharray: 20; stroke-dashoffset: 20; }
+.motif-row .motif-word {
+  opacity: 0;
+  animation: rise 700ms var(--ease-out-quint) forwards;
+  animation-delay: calc(450ms + var(--i) * 260ms);
+}
+.motif-row .motif-line {
+  transform-origin: var(--origin, left);
+  transform: scaleX(0);
+  animation: grow-x 900ms var(--ease-out-quint) forwards;
+  animation-delay: calc(200ms + var(--i) * 260ms);
+}
+[dir="rtl"] .motif-row .motif-line { --origin: right; }
+.hero-in { opacity: 0; animation: rise 800ms var(--ease-out-quint) forwards; animation-delay: calc(var(--i, 0) * 90ms); }
+
