@@ -1,6 +1,6 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import sharp, { type Metadata } from "sharp";
+type Metadata = import("sharp").Metadata;
 import { and, desc, eq, ilike, inArray, sql } from "drizzle-orm";
 import { db } from "@/server/db";
 import { media } from "@/server/db/schema";
@@ -47,6 +47,8 @@ export async function storeUpload(file: File, opts: { folder: string; userId: st
   // Trust content, not the client-provided type: sniff images with sharp.
   if (IMAGE_TYPES.has(file.type)) {
     if (buf.length > MEDIA_LIMITS.imageBytes) throw new UploadError("size");
+    const sharpModule = await import("sharp");
+    const sharp = sharpModule.default;
     let meta: Metadata;
     try {
       meta = await sharp(buf).metadata();
